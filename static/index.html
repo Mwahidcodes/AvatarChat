@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f6f4ff" />
+  <title>English Coach</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Icon library: each icon is drawn once here and reused with <use> -->
+  <svg class="sprite" aria-hidden="true" focusable="false">
+    <symbol id="i-mic" viewBox="0 0 24 24">
+      <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
+      <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+      <line x1="12" x2="12" y1="19" y2="22" />
+    </symbol>
+    <symbol id="i-stop" viewBox="0 0 24 24">
+      <rect x="6" y="6" width="12" height="12" rx="2" />
+    </symbol>
+    <symbol id="i-send" viewBox="0 0 24 24">
+      <path d="m22 2-7 20-4-9-9-4Z" />
+      <path d="M22 2 11 13" />
+    </symbol>
+    <symbol id="i-trend" viewBox="0 0 24 24">
+      <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
+      <polyline points="16 7 22 7 22 13" />
+    </symbol>
+    <symbol id="i-history" viewBox="0 0 24 24">
+      <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+      <path d="M3 3v5h5" />
+      <path d="M12 7v5l4 2" />
+    </symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24">
+      <path d="M3 6h18" />
+      <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+      <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+      <line x1="10" x2="10" y1="11" y2="17" />
+      <line x1="14" x2="14" y1="11" y2="17" />
+    </symbol>
+    <symbol id="i-check" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="10" />
+      <path d="m9 12 2 2 4-4" />
+    </symbol>
+    <symbol id="i-back" viewBox="0 0 24 24">
+      <path d="m12 19-7-7 7-7" />
+      <path d="M19 12H5" />
+    </symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24">
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+      <polyline points="17 8 12 3 7 8" />
+      <line x1="12" x2="12" y1="3" y2="15" />
+    </symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24">
+      <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z" />
+      <path d="M20 3v4" />
+      <path d="M22 5h-4" />
+    </symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24">
+      <line x1="4" x2="20" y1="6" y2="6" />
+      <line x1="4" x2="20" y1="12" y2="12" />
+      <line x1="4" x2="20" y1="18" y2="18" />
+    </symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24">
+      <path d="M5 12h14" />
+      <path d="M12 5v14" />
+    </symbol>
+    <symbol id="i-close" viewBox="0 0 24 24">
+      <path d="M18 6 6 18" />
+      <path d="m6 6 12 12" />
+    </symbol>
+  </svg>
+
+  <!-- Soft animated background (decorative) -->
+  <div class="bg" aria-hidden="true"><span></span><span></span><span></span></div>
+
+  <!-- Top bar: menu and back on the left, page title, chat tools on the right -->
+  <header id="topbar">
+    <div class="tb-left">
+      <button id="menuBtn" class="icon-btn" title="Your partners" aria-label="Open partners menu" aria-expanded="false">
+        <svg class="icon"><use href="#i-menu" /></svg>
+      </button>
+      <button id="backBtn" class="icon-btn hidden" title="Back" aria-label="Back">
+        <svg class="icon"><use href="#i-back" /></svg>
+      </button>
+      <div class="tb-title">
+        <canvas class="emblem emblem-sm" aria-hidden="true"></canvas>
+        <div>
+          <strong id="topTitle">English Coach</strong>
+          <small id="topSub" class="hidden"></small>
+        </div>
+      </div>
+    </div>
+
+    <div id="chatActions" class="tb-actions hidden">
+      <select id="modeSelect" title="Conversation mode" aria-label="Conversation mode"></select>
+      <button id="progressBtn" class="icon-btn" title="Progress" aria-label="Progress">
+        <svg class="icon"><use href="#i-trend" /></svg>
+      </button>
+      <button id="memoryBtn" class="icon-btn" title="What the coach remembers" aria-label="Memory">
+        <svg class="icon"><use href="#i-history" /></svg>
+      </button>
+      <button id="clear" class="icon-btn" title="Clear chat" aria-label="Clear chat">
+        <svg class="icon"><use href="#i-trash" /></svg>
+      </button>
+      <button id="endSession" class="finish" title="End the session and get feedback">
+        <svg class="icon"><use href="#i-check" /></svg>
+        <span>End session</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Slide-in menu with the saved partners -->
+  <div id="scrim"></div>
+  <aside id="drawer" aria-label="Your partners" aria-hidden="true">
+    <div class="drawer-head">
+      <h2>Your partners</h2>
+      <button id="drawerClose" class="icon-btn" title="Close" aria-label="Close menu">
+        <svg class="icon"><use href="#i-close" /></svg>
+      </button>
+    </div>
+    <div id="saved"></div>
+    <a id="newPartnerLink" class="drawer-new" href="#/create">
+      <svg class="icon"><use href="#i-plus" /></svg>
+      <span>New partner</span>
+    </a>
+  </aside>
+
+  <!-- The pages: only one is visible at a time -->
+  <div class="pages">
+
+    <!-- Page 1: Home -->
+    <section id="page-home" class="page">
+      <div class="home">
+        <canvas class="emblem emblem-xl" aria-hidden="true"></canvas>
+        <h1>Hi, I'm your <span class="grad">English coach</span></h1>
+        <p class="sub">Give me a face, pick a mode, and let's practise speaking together.</p>
+
+        <!-- Main call-to-action: the glass AI button -->
+        <button id="goCreate" class="glass-ai" type="button">
+          <span class="orb" aria-hidden="true"></span>
+          <span class="label">Create a partner</span>
+          <svg class="icon spark-icon" aria-hidden="true"><use href="#i-spark" /></svg>
+        </button>
+
+        <button id="continueBtn" class="pill hidden" type="button"></button>
+
+        <p class="notice">
+          Partners are AI-generated personas. Only use photos of yourself or
+          photos you have permission to use.
+        </p>
+      </div>
+    </section>
+
+    <!-- Page 2: Create a partner -->
+    <section id="page-create" class="page hidden">
+      <div class="page-inner narrow">
+        <h1 class="page-title">Create a partner</h1>
+        <p class="sub">Choose a photo and a personality. You can change the mode any time.</p>
+
+        <div class="card">
+          <label class="dropzone" for="photo">
+            <input type="file" id="photo" accept="image/*" />
+            <img id="preview" class="hidden" alt="Preview of the chosen photo" />
+            <span class="dz-text">
+              <svg class="icon dz-icon"><use href="#i-upload" /></svg>
+              <strong>Choose or drop a photo</strong>
+              <small>Your own, or one you have permission to use</small>
+            </span>
+          </label>
+
+          <label class="field-label" for="name">Name</label>
+          <input type="text" id="name" placeholder="e.g. Sarah" />
+
+          <label class="field-label" for="style">Personality</label>
+          <input type="text" id="style" value="friendly, patient and encouraging" />
+
+          <label class="field-label" for="mode">Conversation mode</label>
+          <select id="mode"></select>
+
+          <button id="start" class="glass-ai" type="button">
+            <span class="orb" aria-hidden="true"></span>
+            <span class="label">Create and start</span>
+            <svg class="icon spark-icon" aria-hidden="true"><use href="#i-spark" /></svg>
+          </button>
+
+          <p class="notice">
+            The partner is an AI-generated persona. Only upload photos of
+            yourself or photos you have permission to use.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Page 3: Chat -->
+    <section id="page-chat" class="page page-chat hidden">
+      <div id="stage">
+        <div class="avatar-wrap">
+          <span class="ring" aria-hidden="true"></span>
+          <img id="avatar" alt="Partner avatar" />
+        </div>
+        <div id="status" role="status" aria-live="polite"></div>
+      </div>
+
+      <div id="voiceBar">
+        <label class="switch"><input type="checkbox" id="voiceOn" checked /><span>Voice replies</span></label>
+        <label class="switch"><input type="checkbox" id="handsFree" /><span>Hands-free</span></label>
+        <select id="voiceSelect" title="Voice" aria-label="Voice"></select>
+      </div>
+
+      <div id="messages" role="log" aria-live="polite"></div>
+
+      <div id="inputBar">
+        <input type="text" id="input" placeholder="Type or press the mic..." />
+        <button id="mic" class="mic" title="Speak" aria-label="Speak">
+          <svg class="icon i-mic"><use href="#i-mic" /></svg>
+          <svg class="icon i-stop"><use href="#i-stop" /></svg>
+        </button>
+        <button id="send" class="send" title="Send" aria-label="Send">
+          <svg class="icon"><use href="#i-send" /></svg>
+        </button>
+      </div>
+      <p class="foot">AI-generated persona. Replies can contain mistakes.</p>
+    </section>
+
+    <!-- Page 4: Progress -->
+    <section id="page-progress" class="page hidden">
+      <div class="page-inner">
+        <h1 class="page-title">Your progress</h1>
+        <p class="sub">Scores from your finished sessions.</p>
+        <div id="progressBody"></div>
+      </div>
+    </section>
+
+    <!-- Page 5: Memory -->
+    <section id="page-memory" class="page hidden">
+      <div class="page-inner">
+        <h1 class="page-title">What your coach remembers</h1>
+        <p class="sub">Short notes from earlier sessions. You can erase them any time.</p>
+        <div id="memoryBody"></div>
+      </div>
+    </section>
+
+  </div>
+
+  <script src="app.js"></script>
+  <script src="fx.js"></script>
+</body>
+</html>
